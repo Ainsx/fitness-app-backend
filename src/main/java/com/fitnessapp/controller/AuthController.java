@@ -7,10 +7,13 @@ import com.fitnessapp.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+//Reponsibilities : Accept Requests/return responses
+@RestController // "This class will handle HTTP requests and return JSON responses"
 @RequestMapping("/auth") // now endpoints are /auth/register and /auth/login
 public class AuthController {
-    private final AuthService authService;
+    private final AuthService authService;// dependency
+    // "This controller depends on a service called AuthService to handle the actul
+    // logic"
 
     public AuthController(AuthService authService) {
         this.authService = authService;

@@ -11,3 +11,5 @@ public class AuthResponse {
         return token;
     }
 }
+
+// Data Transfer Object
