@@ -2,10 +2,14 @@ package com.fitnessapp;
 
 import com.fitnessapp.model.User;
 import com.fitnessapp.repository.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 // adds
@@ -26,12 +30,23 @@ public class FitnessAppApplication {
 		SpringApplication.run(FitnessAppApplication.class, args);
 	}
 
+	@Autowired
+	private PasswordEncoder encoder;
+
+	/*
+	 * Testing data purpose
+	 * Running one time set up logic
+	 * Debug logging/ checks during dev
+	 */
 	@Bean // injected object from User repo
 	CommandLineRunner run(UserRepository repo) {//
 		return args -> {
 			// repo -> reference
-			repo.save(new User("testUser", "securepass123","testUser1@gmail.com"));
-			System.out.println("testUser saving to database");
+			if (repo.findByEmail("testUser1@gmail.com").isEmpty()) {
+				String hashed = encoder.encode("securepass123");
+				repo.save(new User("testUser", hashed, "testUser1@gmail.com"));
+				System.out.println("testUser saving to database");
+			}
 		};
 	}
 }
